@@ -1,5 +1,6 @@
 package discover;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import analyzer.Commit;
@@ -11,10 +12,10 @@ import analyzer.Commit;
  */
 public abstract class Repository {
 	
-	String pathToRepo = null;
+	File pathToRepo = null;
 	
 	public Repository(String pathToRepo){
-		this.pathToRepo = pathToRepo;
+		this.pathToRepo = new File(pathToRepo);
 	}
 	
 	/**

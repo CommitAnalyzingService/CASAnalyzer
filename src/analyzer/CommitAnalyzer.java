@@ -39,7 +39,7 @@ public class CommitAnalyzer {
 			System.exit(1);
 		}
 		
-		bugFinder = new BugFinder(repo);
+		bugFinder = new BugFinder(repo, dbAccess);
 	}
 
 	/**
@@ -66,8 +66,8 @@ public class CommitAnalyzer {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		CommitAnalyzer codeAnalyzer = new CommitAnalyzer("localhost","code_commits","toffer","",
-												"/Users/toffer/EclipseWorkspace/CASAnalyzer/leaflet-mouse", "git");
+		CommitAnalyzer codeAnalyzer = new CommitAnalyzer("localhost","homebrew","toffer","",
+												"/Users/toffer/Work/RiskyChanges/homebrew", "git");
 		codeAnalyzer.start();
 	}
 

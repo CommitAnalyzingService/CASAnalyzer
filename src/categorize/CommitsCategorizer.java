@@ -1,6 +1,8 @@
 package categorize;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 import analyzer.Commit;
 
 /**
@@ -26,6 +28,8 @@ public class CommitsCategorizer {
 			}
 		}
 		
+		System.out.println(correctiveCommits.size());
+
 		return correctiveCommits;
 	}
 	

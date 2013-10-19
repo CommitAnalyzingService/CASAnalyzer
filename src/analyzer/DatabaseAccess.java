@@ -32,7 +32,8 @@ public class DatabaseAccess {
 	}
 	
 	/** 
-	 * Retrieve all commits from the commit database in descending order.
+	 * Retrieve all commits from the commit database sorted by the Unix time stamp
+	 * of author in descending order
 	 * 
 	 * @return an array list of all commits in the repo.
 	 */
@@ -79,7 +80,41 @@ public class DatabaseAccess {
             }
 		}
 		
-		Collections.sort(commits);
+		Collections.sort(commits, Collections.reverseOrder());
 		return commits;
+	}
+	
+	/**
+	 * Mark a commit as bug inducing in the commits table.
+	 * @param commit Commit		A bug inducing commit
+	 */
+	public void markAsBugInducing(Commit commit){
+		
+		try{
+			con = DriverManager.getConnection(commitDbUrl, user, password);
+	        pst = con.prepareStatement("UPDATE commits SET contains_bug = 'true' WHERE commit_hash = '" + 
+	        								commit.getCommitHash() + "'");
+	        pst.executeUpdate();
+		} catch (SQLException ex){
+			Logger lgr = Logger.getLogger(DatabaseAccess.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+		} finally {
+			try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DatabaseAccess.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+		}
+		
 	}
 }
