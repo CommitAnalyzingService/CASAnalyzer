@@ -56,7 +56,7 @@ public class CommitAnalyzer {
 	 */
 	public void createMetrics() {
 		ModelBuilder mb = new ModelBuilder(dbAccess);
-		mb.buildMetrics();
+		mb.generateModel();
 	}
 
 	/**

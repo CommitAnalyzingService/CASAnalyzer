@@ -53,12 +53,14 @@ public class DatabaseAccess {
 	        	 String message = rs.getString(17);
 	        	 String authorName = rs.getString(7);
 	        	 String unixTimeStamp = rs.getString(11);
+	        	 boolean isBuggy = rs.getBoolean(19);
 	        	 
 	        	 int ns = rs.getInt(20);
 	        	 int nd = rs.getInt(21);
 	        	 int nf = rs.getInt(22);
 	        	 
-	        	 Commit commit = new Commit(commitHash,treeHash,message,authorName,unixTimeStamp,ns,nd,nf);
+	        	 Commit commit = new Commit(commitHash,treeHash,message,authorName,unixTimeStamp,ns,nd,nf,
+	        			 					isBuggy);
 	        	 commits.add(commit);
 	        
 	            }

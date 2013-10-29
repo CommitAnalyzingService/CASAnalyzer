@@ -43,7 +43,7 @@ public class Commit implements Comparable<Commit> {
 	private boolean buggy = false;
 	
 	public Commit(String commitHash, String treeHash, String message, String authorName, String unixTimeStamp, int ns,
-			int nd, int nf){
+			int nd, int nf, boolean isBuggy){
 		this.commitHash = commitHash;
 		this.treeHash = treeHash;
 		this.message = message;
@@ -52,6 +52,7 @@ public class Commit implements Comparable<Commit> {
 		this.ns = ns;
 		this.nd = nd;
 		this.nf = nf;
+		this.buggy = isBuggy;
 	}
 	
 	/**

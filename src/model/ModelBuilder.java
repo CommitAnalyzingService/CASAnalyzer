@@ -25,43 +25,61 @@ public class ModelBuilder {
 	public ModelBuilder(DatabaseAccess dbAccess){
 		this.dbAccess = dbAccess;
 	}
-	public void buildMetrics() {
+	
+	/**
+	 * Build the lists of metrics for each commit
+	 */
+	public void buildLists() {
 		ArrayList<Commit> allCommits = dbAccess.getAllCommits();
 		
 		for(Commit commit : allCommits){
 			if(commit.isBuggy()){
+				System.out.println("Buggy");
 				nsListBuggy.add(commit.getNS());
 				ndListBuggy.add(commit.getND());
 				nfListBuggy.add(commit.getNF());
 			} else {
+				System.out.println("\t NonBuggy");
 				nsListNonBuggy.add(commit.getNS());
 				ndListNonBuggy.add(commit.getND());
 				nfListNonBuggy.add(commit.getNF());
 			}
 		}
 		
+		calculateMedianMetrics();
+	}
+	
+	/**
+	 * Calculate the medians
+	 */
+	public void calculateMedianMetrics(){
 		// calculate the medians 
 		if(!Rengine.versionCheck()){
-			 System.err.println("** Version mismatch - Java files don't match library version.");
-			 System.exit(1);
+			System.err.println("** Version mismatch - Java files don't match library version.");
+			System.exit(1);
 		}
-		
+
 		String[] test = new String[] {"--vanilla"};
 		Rengine re=new Rengine(test, false, new RTextConsole()); //false, new RTextConsole());
-        System.out.println("Rengine created, waiting for R");
+		System.out.println("Rengine created, waiting for R");
 		// the engine creates R is a new thread, so we should wait until it's ready
-        if (!re.waitForR()) {
-            System.out.println("Cannot load R");
-            return;
-        }
-        
-        try{
-        	REXP x;
-        	System.out.println(re.eval("sqrt(36)"));
-        } catch (Exception e) {
+		if (!re.waitForR()) {
+			System.out.println("Cannot load R");
+			return;
+		}
+
+		try{
+			REXP x;
+			System.out.println(nsListNonBuggy.size());
+			System.out.println(re.eval("median(c(" + nsListNonBuggy + ")"));
+		} catch (Exception e) {
 			System.out.println("EX:"+e);
 			e.printStackTrace();
 		}
-		
 	}
+	
+	public void generateModel() {
+		buildLists();
+	}
+		
 }
