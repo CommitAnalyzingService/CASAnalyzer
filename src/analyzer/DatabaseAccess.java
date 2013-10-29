@@ -31,6 +31,7 @@ public class DatabaseAccess {
 		this.password = password;
 	}
 	
+	
 	/** 
 	 * Retrieve all commits from the commit database sorted by the Unix time stamp
 	 * of author in descending order
@@ -53,7 +54,11 @@ public class DatabaseAccess {
 	        	 String authorName = rs.getString(7);
 	        	 String unixTimeStamp = rs.getString(11);
 	        	 
-	        	 Commit commit = new Commit(commitHash,treeHash,message,authorName,unixTimeStamp);
+	        	 int ns = rs.getInt(20);
+	        	 int nd = rs.getInt(21);
+	        	 int nf = rs.getInt(22);
+	        	 
+	        	 Commit commit = new Commit(commitHash,treeHash,message,authorName,unixTimeStamp,ns,nd,nf);
 	        	 commits.add(commit);
 	        
 	            }
@@ -115,6 +120,35 @@ public class DatabaseAccess {
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
 		}
-		
+	}
+	
+	public void updateMetrics(Commit commit){
+		try{
+			con = DriverManager.getConnection(commitDbUrl, user, password);
+	        pst = con.prepareStatement("UPDATE commits SET ns = " + commit.getNS() + 
+	        							",nd =  " + commit.getND() + 
+	        							",nf = " + commit.getNF() + "WHERE commit_hash = '" + 
+	        								commit.getCommitHash() + "'");
+	        pst.executeUpdate();
+		} catch (SQLException ex){
+			Logger lgr = Logger.getLogger(DatabaseAccess.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+		} finally {
+			try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DatabaseAccess.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+		}
 	}
 }

@@ -1,7 +1,6 @@
 package categorize;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import analyzer.Commit;
 

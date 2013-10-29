@@ -2,9 +2,6 @@ package analyzer;
 import java.util.ArrayList;
 
 import categorize.CommitsCategorizer;
-import discover.BugFinder;
-import discover.Git;
-import discover.Repository;
 
 
 /**
@@ -17,7 +14,7 @@ public class CommitAnalyzer {
 	CommitsCategorizer commitsCategorizer = null;
 	DatabaseAccess dbAccess = null;
 	Repository repo = null;
-	BugFinder bugFinder = null;
+	CommitInspector commitInspector = null;
 	
 	/**
 	 * Constructor 
@@ -39,8 +36,9 @@ public class CommitAnalyzer {
 			System.exit(1);
 		}
 		
-		bugFinder = new BugFinder(repo, dbAccess);
+		commitInspector = new CommitInspector(repo, dbAccess);
 	}
+	
 
 	/**
 	 * Start analyzing the commits 
@@ -49,8 +47,8 @@ public class CommitAnalyzer {
 		 
 		ArrayList<Commit> commits = dbAccess.getAllCommits();
 		ArrayList<Commit> correctiveCommits = commitsCategorizer.getAllCorrectiveCommits(commits);
+		commitInspector.inspectCommits(correctiveCommits, commits);
 		
-		bugFinder.findAllBugInducingCommits(correctiveCommits, commits);
 		
 	/*	// Testing
 		for(Commit commit : correctiveCommits){
