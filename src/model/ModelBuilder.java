@@ -2,8 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
-import analyzer.Commit;
-import analyzer.DatabaseAccess;
+import analyze.Commit;
+import analyze.DatabaseAccess;
 
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
@@ -57,7 +57,7 @@ public class ModelBuilder {
         
         try{
         	REXP x;
-            System.out.println(x=re.eval("bool"));
+        	System.out.println(re.eval("sqrt(36)"));
         } catch (Exception e) {
 			System.out.println("EX:"+e);
 			e.printStackTrace();
