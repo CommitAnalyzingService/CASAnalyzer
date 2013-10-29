@@ -1,6 +1,8 @@
 package analyzer;
 import java.util.ArrayList;
 
+import model.ModelBuilder;
+
 import categorize.CommitsCategorizer;
 
 
@@ -46,7 +48,9 @@ public class CommitAnalyzer {
 	public void start() {
 		 
 		ArrayList<Commit> commits = dbAccess.getAllCommits();
+		System.out.println("Getting Corrective...");
 		ArrayList<Commit> correctiveCommits = commitsCategorizer.getAllCorrectiveCommits(commits);
+		System.out.println("Inspecting..");
 		commitInspector.inspectCommits(correctiveCommits, commits);
 		
 		
@@ -57,6 +61,11 @@ public class CommitAnalyzer {
 		} */
 		
 	}
+	
+	public void createMetrics() {
+		ModelBuilder mb = new ModelBuilder(dbAccess);
+		mb.buildMetrics();
+	}
 
 	/**
 	 * @param args
@@ -64,9 +73,10 @@ public class CommitAnalyzer {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		CommitAnalyzer codeAnalyzer = new CommitAnalyzer("localhost","homebrew","toffer","",
-												"/Users/toffer/Work/RiskyChanges/homebrew", "git");
-		codeAnalyzer.start();
+		CommitAnalyzer codeAnalyzer = new CommitAnalyzer("localhost","leaflet","toffer","",
+												"/Users/toffer/Work/RiskyChanges/leaflet", "git");
+		//codeAnalyzer.start();
+		codeAnalyzer.createMetrics();
 	}
 
 }

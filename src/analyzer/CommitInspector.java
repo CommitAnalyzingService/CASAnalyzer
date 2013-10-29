@@ -42,14 +42,15 @@ public class CommitInspector {
 	private void findBugInducingCommit(Commit correctiveCommit, List<Commit> allCommits){
 
 		ArrayList<String> filesChangedCorrectiveCommit = repo.filesChanged(correctiveCommit);
-		
+		System.out.println(correctiveCommit.getCommitHash());
 		for(Commit commit: allCommits){
 			
 			if(commit.getUnixTimeStamp() < correctiveCommit.getUnixTimeStamp()){
+				
+				System.out.println("B4 files + " + commit.getCommitHash());
 				ArrayList<String> filesChanged = repo.filesChanged(commit);
-				
-		
-				
+				System.out.println("after files");
+	
 				for(String file: filesChanged){
 					
 					// This introduced the bug!
@@ -97,9 +98,16 @@ public class CommitInspector {
 		
 		int corrIndex = 0;
 	
+		// mark those that are buggy
 		for(Commit commit: correctiveCommits){ 
 			corrIndex = findCorrectiveIndex(commit,allCommits, corrIndex);
 			findBugInducingCommit(commit, allCommits.subList(corrIndex, allCommits.size()-1 ));
+		}
+		
+		System.out.println("Generating Metrics!");
+		
+		// generate metrics
+		for(Commit commit: allCommits){
 			metrics.generateMetrics(commit);
 			dbAccess.updateMetrics(commit);
 		}
