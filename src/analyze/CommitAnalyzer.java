@@ -3,6 +3,10 @@ import inspect.CommitsInspector;
 
 import java.util.ArrayList;
 
+import scm.Git;
+import scm.Repository;
+
+import model.MetricDbAccess;
 import model.ModelBuilder;
 
 
@@ -14,9 +18,12 @@ import model.ModelBuilder;
  */
 public class CommitAnalyzer {
 	
-	CommitsInspector commitsInspector = null;
-	DatabaseAccess dbAccess = null;
-	Repository repo = null;
+	private CommitsInspector commitsInspector = null;
+	private MetricDbAccess metricDbAccess = null;
+	private CommitDbAccess commitDbAccess = null;
+	private Repository repo = null;
+	private String repoName = null;
+	
 	
 	/**
 	 * Constructor 
@@ -26,9 +33,14 @@ public class CommitAnalyzer {
 	 * @param dbPass			The password of the dbuser
 	 * @param pathToRepo		Path to the directory holding the repository
 	 * @param repoType			The repository type i.e. git,svn,etc
+	 * @param repoName			The repository name
 	 */
-	public CommitAnalyzer(String database, String commitTable, String dbUser, String dbPass, String pathToRepo, String repoType) {
-		dbAccess = new DatabaseAccess(database,commitTable,dbUser,dbPass);
+	public CommitAnalyzer(String database, String commitTable, String dbUser, String dbPass, String pathToRepo, String repoType,
+			String repoName) {
+		
+		commitDbAccess = new CommitDbAccess(database,commitTable,dbUser,dbPass);
+		metricDbAccess = new MetricDbAccess(database, commitTable, dbUser,dbPass);
+		this.repoName = repoName;
 		
 		if(repoType.toLowerCase() == "git"){
 			repo = new Git(pathToRepo);
@@ -37,7 +49,7 @@ public class CommitAnalyzer {
 			System.exit(1);
 		}
 		
-		commitsInspector = new CommitsInspector(dbAccess, repo);
+		commitsInspector = new CommitsInspector(commitDbAccess, repo);
 	}
 	
 
@@ -46,7 +58,7 @@ public class CommitAnalyzer {
 	 * Performs metrics on them and determines which are bug inducing
 	 */
 	public void inspectCommits() {
-		ArrayList<Commit> commits = dbAccess.getAllCommits();
+		ArrayList<Commit> commits = commitDbAccess.getAllCommits();
 		commitsInspector.inspectAllCommits(commits);
 	}
 	
@@ -55,7 +67,7 @@ public class CommitAnalyzer {
 	 * commits.
 	 */
 	public void createMetrics() {
-		ModelBuilder mb = new ModelBuilder(dbAccess);
+		ModelBuilder mb = new ModelBuilder(repoName, metricDbAccess, commitDbAccess);
 		mb.generateModel();
 	}
 
@@ -65,10 +77,10 @@ public class CommitAnalyzer {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		CommitAnalyzer codeAnalyzer = new CommitAnalyzer("localhost","leaflet","toffer","",
-												"/Users/toffer/Work/RiskyChanges/leaflet", "git");
+		CommitAnalyzer commitAnalyzer = new CommitAnalyzer("localhost","leaflet","toffer","",
+												"/Users/toffer/Work/RiskyChanges/leaflet", "git", "leaflet");
 		//codeAnalyzer.inspectCommits();
-		codeAnalyzer.createMetrics();
+		commitAnalyzer.createMetrics();
 	}
 
 }

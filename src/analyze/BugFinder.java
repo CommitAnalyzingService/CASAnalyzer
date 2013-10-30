@@ -3,6 +3,8 @@ package analyze;
 import java.util.ArrayList;
 import java.util.List;
 
+import scm.Repository;
+
 
 /**
  * The bug finder "inspects" all commits to find those that potentially
@@ -14,7 +16,7 @@ import java.util.List;
 public class BugFinder {
 	
 	private Repository repo = null;
-	private DatabaseAccess dbAccess = null;
+	private CommitDbAccess dbAccess = null;
 	
 	/**
 	 * Constructor
@@ -22,7 +24,7 @@ public class BugFinder {
 	 * @param correctiveCommits		Commits that fix bugs/ are corrective
 	 * @param repo 			 		The version-control repository
 	 */
-	public BugFinder(Repository repo, DatabaseAccess db) {
+	public BugFinder(Repository repo, CommitDbAccess db) {
 		this.repo = repo;
 		this.dbAccess = db;
 	}

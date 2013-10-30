@@ -2,10 +2,11 @@ package inspect;
 
 import java.util.ArrayList;
 
+import scm.Repository;
+
 import analyze.BugFinder;
 import analyze.Commit;
-import analyze.DatabaseAccess;
-import analyze.Repository;
+import analyze.CommitDbAccess;
 
 /**
  * Categorize commit messages and performs metrics on them. This way we can need 
@@ -19,8 +20,8 @@ import analyze.Repository;
 public class CommitsInspector {
 	
 	private Corrective correctiveCat = null;
-	private DatabaseAccess dbAccess = null;
-	private Metrics metrics = null;
+	private CommitDbAccess dbAccess = null;
+	private CommitStats metrics = null;
 	private BugFinder bugFinder = null;
 	
 	/**
@@ -28,10 +29,10 @@ public class CommitsInspector {
 	 * @param dbAccess		The database access object
 	 * @param repo			The repository
 	 */
-	public CommitsInspector(DatabaseAccess dbAccess, Repository repo){
+	public CommitsInspector(CommitDbAccess dbAccess, Repository repo){
 		this.correctiveCat = new Corrective();
 		this.dbAccess = dbAccess;
-		this.metrics = new Metrics(repo);
+		this.metrics = new CommitStats(repo);
 		this.bugFinder = new BugFinder(repo, dbAccess);
 	}
 	
@@ -51,7 +52,7 @@ public class CommitsInspector {
 			}
 			
 			// generate the metrics for the commit
-			metrics.generateMetrics(commit);
+			metrics.generateStats(commit);
 			dbAccess.updateMetrics(commit);
 		}
 	}
