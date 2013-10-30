@@ -121,7 +121,4 @@ public class Git extends Repository{
 		}
 		return filesChanged;
 	}
-	
-	
-
 }

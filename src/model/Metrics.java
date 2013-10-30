@@ -18,6 +18,8 @@ public class Metrics {
 	private double ndBuggyMedian;
 	private double nfBuggyMedian;
 	private double nfNonBuggyMedian;
+	private double entrophyBuggy;
+	private double entrophyNonBuggy;
 	
 	/** GETTERS AND SETTERS **/
 	
@@ -68,6 +70,21 @@ public class Metrics {
 	public void setNfNonBuggyMedian(double nfNonBuggyMedian) {
 		this.nfNonBuggyMedian = nfNonBuggyMedian;
 	}
+
+	public void setEntrophyBuggyMedian(double entrophy){
+		this.entrophyBuggy = entrophy;
+	}
 	
+	public double getEntrophyBuggyMedian(){
+		return this.entrophyBuggy;
+	}
+	
+	public void setEntrophyNonBuggyMedian(double entrophy){
+		this.entrophyNonBuggy = entrophy;
+	}
+	
+	public double getEntrophyNonBuggyMedian(){
+		return this.entrophyNonBuggy;
+	}
 	
 }

@@ -24,7 +24,7 @@ public class Commit implements Comparable<Commit> {
 	private int ns = 0; // number of modified subsystems
 	private int nd = 0; // number of modified directories
 	private int nf = 0; // number of modified files
-	private int entrophy = 0; // distribution of modified code across each file
+	private double entrophy = 0; // distribution of modified code across each file
 	
 	// purpose 
 	private boolean fix = false; // whether or not change is a defect fix
@@ -115,8 +115,12 @@ public class Commit implements Comparable<Commit> {
 	public int getNF(){
 		return this.nf;
 	}
-	public void setEntrophy(int entrophy){
+	public void setEntrophy(double entrophy){
 		this.entrophy = entrophy;
+	}
+	
+	public double getEntrophy(){
+		return this.entrophy;
 	}
 	
 	public boolean isBuggy(){

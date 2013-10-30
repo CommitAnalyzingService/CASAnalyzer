@@ -28,4 +28,8 @@ public class DiffFile {
 	public int getLinesDeleted(){
 		return this.linesDeleted;
 	}
+	
+	public int getAllModifiedLOC(){
+		return (this.linesAdded + this.linesDeleted);
+	}
 }

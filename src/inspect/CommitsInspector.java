@@ -46,6 +46,8 @@ public class CommitsInspector {
 		
 		for (Commit commit: allCommits) {
 			
+			System.out.println("       inspecting: " + commit.getCommitHash());
+			
 			// If it is a corrective commit, check to see where the bug was introduced.
 			if (correctiveCat.belongs(commit)){
 				bugFinder.findBugInducingCommit(commit, allCommits);

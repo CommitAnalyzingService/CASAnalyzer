@@ -8,7 +8,6 @@ import scm.Repository;
 
 import analyze.Commit;
 
-
 /**
  * Calculates the metrics for a commit 
  * @author toffer
@@ -89,12 +88,22 @@ public class CommitStats {
 	 * 					Measures the distribution of change across
 	 * 					the file
 	 */
-	void addEntrophy(Commit commit, ArrayList<String> filesChanged) {
+	void addEntrophy(Commit commit, ArrayList<DiffFile> diff) {
+		ArrayList<Integer> locModified = new ArrayList<Integer>();
+		int totalLOCModified = 0;
+		double entrophy = 0;
 		
+		for(DiffFile diffFile : diff){
+			int modLOC = diffFile.getAllModifiedLOC();
+			totalLOCModified += modLOC; locModified.add(modLOC);
+		}
 		
+		for(DiffFile diffFile: diff){
+			double value = (double)diffFile.getAllModifiedLOC()/(double)totalLOCModified;
+			entrophy -= (value * (Math.log(value)/Math.log(2)));
+		}
+		commit.setEntrophy(entrophy);
 	}
 	
-	
 	/** END DIFFUSION **/
-
 }

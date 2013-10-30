@@ -25,6 +25,8 @@ public class ModelBuilder {
 	private ArrayList<Integer> ndListNonBuggy = new ArrayList<Integer>();
 	private ArrayList<Integer> nfListBuggy = new ArrayList<Integer>();
 	private ArrayList<Integer> nfListNonBuggy = new ArrayList<Integer>();
+	private ArrayList<Double> entrophyListBuggy = new ArrayList<Double>();
+	private ArrayList<Double> entrophyListNonBuggy = new ArrayList<Double>();
 	
 	public ModelBuilder(String repoName, MetricDbAccess mDbAccess, CommitDbAccess cDbAccess){
 		this.metricDbAccess = mDbAccess;
@@ -43,10 +45,12 @@ public class ModelBuilder {
 				nsListBuggy.add(commit.getNS());
 				ndListBuggy.add(commit.getND());
 				nfListBuggy.add(commit.getNF());
+				entrophyListBuggy.add(commit.getEntrophy());
 			} else {
 				nsListNonBuggy.add(commit.getNS());
 				ndListNonBuggy.add(commit.getND());
 				nfListNonBuggy.add(commit.getNF());
+				entrophyListNonBuggy.add(commit.getEntrophy());
 			}
 		}
 		
@@ -109,6 +113,12 @@ public class ModelBuilder {
 			
 			x = re.eval("median(c" + replaceBrackets(nfListBuggy.toString()) + ")");
 			metrics.setNfBuggyMedian(x.asDouble());
+			
+			x = re.eval("median(c" + replaceBrackets(entrophyListBuggy.toString()) + ")");
+			metrics.setEntrophyBuggyMedian(x.asDouble());
+			
+			x = re.eval("median(c" + replaceBrackets(entrophyListNonBuggy.toString()) + ")");
+			metrics.setEntrophyNonBuggyMedian(x.asDouble());
 			
 			// update the metrics table
 			metricDbAccess.updateMetric(metrics, repoName);
