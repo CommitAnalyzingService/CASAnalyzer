@@ -3,6 +3,7 @@ package inspect;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import scm.DiffFile;
 import scm.Repository;
 
 import analyze.Commit;
@@ -22,11 +23,10 @@ public class CommitStats {
 	}
 	
 	public void generateStats(Commit commit){
-		
-		ArrayList<String> filesChanged = repo.filesChanged(commit);
-		addNS(commit, filesChanged);
-		addND(commit, filesChanged);
-		addNF(commit, filesChanged);
+		ArrayList<DiffFile> diff = repo.performDiff(commit);
+		addNS(commit, diff);
+		addND(commit, diff);
+		addNF(commit, diff);
 	}
 	
 	/** ----- Diffusion ------ **/
@@ -36,19 +36,17 @@ public class CommitStats {
 	 * Description:		Adds the number of modified subsystems to a commit
 	 * 				 	We use the root directory name as subsystem name
 	 */
-	void addNS(Commit commit, ArrayList<String> filesChanged) {
-		
+	void addNS(Commit commit, ArrayList<DiffFile> diff) {
 		int modifiedSubSystems = 0;
 		ArrayList<String> seenSubSystems = new ArrayList<String>();
 		
-		for(String file : filesChanged){
-			String rootDir = file.split("/")[0];
+		for(DiffFile diffFile : diff){
+			String rootDir = (diffFile.getFileChanged()).split("/")[0];
 			if(!seenSubSystems.contains(rootDir)){
 				modifiedSubSystems++;
 				seenSubSystems.add(rootDir);
 			}
 		}
-
 		commit.setNS(modifiedSubSystems);
 	}
 	
@@ -59,12 +57,12 @@ public class CommitStats {
 	 * 					as the same directory - even though they can be different.
 	 * 					(e.g., root/foo/bar & root/bar/foo) 
 	 */
-	void addND(Commit commit, ArrayList<String> filesChanged) {
+	void addND(Commit commit, ArrayList<DiffFile> diff) {
 		int modifiedDir = 0;
 		ArrayList<String> seenDir = new ArrayList<String>();
 		
-		for(String file: filesChanged){
-			String[] dirAndFile = file.split("/");
+		for(DiffFile diffFile: diff){
+			String[] dirAndFile = (diffFile.getFileChanged()).split("/");
 			String[] dirs = Arrays.copyOfRange(dirAndFile, 0, dirAndFile.length-1);
 			for(String dir : dirs){
 				if(!seenDir.contains(dir)){
@@ -81,16 +79,19 @@ public class CommitStats {
 	 * Function:		addNF
 	 * Description: 	Adds the number of modified files to a commit
 	 */
-	void addNF(Commit commit, ArrayList<String> filesChanged){
-		commit.setNF(filesChanged.size());
+	void addNF(Commit commit, ArrayList<DiffFile> diff){
+		commit.setNF(diff.size());
 	}
 	
 	/**
 	 * Function:		addEntrophy
 	 * Description:		Adds entrophy to the commit
+	 * 					Measures the distribution of change across
+	 * 					the file
 	 */
-	void addEntrophy() {
-		// TBD
+	void addEntrophy(Commit commit, ArrayList<String> filesChanged) {
+		
+		
 	}
 	
 	

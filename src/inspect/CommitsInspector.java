@@ -21,7 +21,7 @@ public class CommitsInspector {
 	
 	private Corrective correctiveCat = null;
 	private CommitDbAccess dbAccess = null;
-	private CommitStats metrics = null;
+	private CommitStats commitStats = null;
 	private BugFinder bugFinder = null;
 	
 	/**
@@ -32,7 +32,7 @@ public class CommitsInspector {
 	public CommitsInspector(CommitDbAccess dbAccess, Repository repo){
 		this.correctiveCat = new Corrective();
 		this.dbAccess = dbAccess;
-		this.metrics = new CommitStats(repo);
+		this.commitStats = new CommitStats(repo);
 		this.bugFinder = new BugFinder(repo, dbAccess);
 	}
 	
@@ -52,7 +52,7 @@ public class CommitsInspector {
 			}
 			
 			// generate the metrics for the commit
-			metrics.generateStats(commit);
+			commitStats.generateStats(commit);
 			dbAccess.updateMetrics(commit);
 		}
 	}

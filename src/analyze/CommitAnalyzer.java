@@ -79,8 +79,8 @@ public class CommitAnalyzer {
 		
 		CommitAnalyzer commitAnalyzer = new CommitAnalyzer("localhost","leaflet","toffer","",
 												"/Users/toffer/Work/RiskyChanges/leaflet", "git", "leaflet");
-		//codeAnalyzer.inspectCommits();
-		commitAnalyzer.createMetrics();
+		commitAnalyzer.inspectCommits();
+		//commitAnalyzer.createMetrics();
 	}
 
 }

@@ -61,6 +61,45 @@ public class Git extends Repository{
 	}
 
 	/**
+	 * Returns the diffs for each file in a commit.
+	 * @param commit				The commit to check for files changed
+	 * @return ArrayList<DiffFile>	An ArrayList with DiffFile describing file, lines added, and lines deleted
+	 */
+	public ArrayList<DiffFile> performDiff(Commit commit) {
+		String diffResult = numDiff(commit);
+		ArrayList<DiffFile> diffs = new ArrayList<DiffFile>();
+		
+		String[] lines = diffResult.split("\n");
+		
+		for(String line : lines ){
+			String[] diffLine = line.split("	");
+			
+			// Saftey check - make sure it has name of file
+			if (diffLine.length > 2){
+				String fileName = diffLine[2];
+				int linesAdded;
+				int linesDeleted;
+				
+				try {
+				    linesAdded = Integer.parseInt(diffLine[0]);
+				} catch (NumberFormatException e) {
+				    linesAdded = 0;
+				}
+				
+				try {
+				    linesDeleted = Integer.parseInt(diffLine[1]);
+				} catch (NumberFormatException e) {
+				    linesDeleted = 0;
+				}
+				
+				DiffFile difFile = new DiffFile(fileName, linesAdded, linesDeleted);
+				diffs.add(difFile);
+			}
+		}
+		return diffs;
+	}
+	
+	/**
 	 * Find all the files changed within a commit.
 	 * @param commit				The commit to check for files changed
 	 * @return ArrayList<String>	An ArrayList with all files changed
@@ -82,5 +121,7 @@ public class Git extends Repository{
 		}
 		return filesChanged;
 	}
+	
+	
 
 }
