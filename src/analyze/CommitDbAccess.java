@@ -54,7 +54,7 @@ public class CommitDbAccess {
 	        	 String authorName = rs.getString(7);
 	        	 String unixTimeStamp = rs.getString(11);
 	        	 boolean isBuggy = rs.getBoolean(19);
-	        	 double entrophy = rs.getDouble(20);
+	        	 double entrophy = rs.getDouble(23);
 	        	 
 	        	 int ns = rs.getInt(20);
 	        	 int nd = rs.getInt(21);
