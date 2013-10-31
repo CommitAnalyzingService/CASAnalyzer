@@ -1,6 +1,7 @@
 package inspect;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import scm.Repository;
 
@@ -37,20 +38,44 @@ public class CommitsInspector {
 	}
 	
 	/**
+	 * Find the index of the corrective commit in the allCommits list. This way, we don't keep 
+	 * looking at commits we don't care about when looking for bugs 
+	 * (those that are more recent then the bug correcting commit)
+	 * 
+	 * @param corrCommit	The corrective commit
+	 * @param allCommits	List of all commits
+	 * @param startIndex	The index to start looking for the corrective commit
+	 * @return 				The index of the corrective commit in the list of all commits
+	 */
+	private int findCorrectiveIndex(Commit corrCommit, List<Commit> allCommits, int startIndex){
+		
+		int corrIndex = allCommits.size() -1;
+		for (int index = startIndex; index < allCommits.size(); index++){
+			if (corrCommit.getCommitHash() == allCommits.get(index).getCommitHash()){
+				corrIndex = index;
+			}
+		}
+		
+		return corrIndex;
+	}
+	
+	/**
 	 * Returns an ArrayList of commits of all corrective commits. Also performs metrics
 	 * on all commits. Updates the commits table for the columns isBuggy, ns, nf, and nd
 	 * 
 	 * @param commits	An ArrayList of all the commits
 	 */
 	public void inspectAllCommits(ArrayList<Commit> allCommits){
+		int corrIndex = 0; // keep track on the index of the corrective commit
 		
 		for (Commit commit: allCommits) {
 			
 			System.out.println("       inspecting: " + commit.getCommitHash());
-			
+		
 			// If it is a corrective commit, check to see where the bug was introduced.
 			if (correctiveCat.belongs(commit)){
-				bugFinder.findBugInducingCommit(commit, allCommits);
+				corrIndex = findCorrectiveIndex(commit,allCommits, corrIndex);
+				bugFinder.findBugInducingCommit(commit, allCommits.subList(corrIndex, allCommits.size()-1 ));
 			}
 			
 			// generate the metrics for the commit

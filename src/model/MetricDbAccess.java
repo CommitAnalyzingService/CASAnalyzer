@@ -44,8 +44,8 @@ public class MetricDbAccess {
 	        							",ndnonbuggy = " + metric.getNdNonBuggyMedian() + 
 	        							",nfbuggy = " + metric.getNfBuggyMedian() + 
 	        							",nfnonbuggy = " + metric.getNfNonBuggyMedian() +
-	        							",entrophyBuggy = " + metric.getEntrophyBuggyMedian() + 
-	        							",entrophyNonBuggy = " + metric.getEntrophyNonBuggyMedian() + 
+	        							",entrophybuggy = " + metric.getEntrophyBuggyMedian() + 
+	        							",entrophynonBuggy = " + metric.getEntrophyNonBuggyMedian() + 
 	        							"WHERE repo = '" + repoName + "'");
 	        pst.executeUpdate();
 		} catch (SQLException ex){
