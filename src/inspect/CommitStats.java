@@ -26,6 +26,7 @@ public class CommitStats {
 		addNS(commit, diff);
 		addND(commit, diff);
 		addNF(commit, diff);
+		addEntrophy(commit, diff);
 	}
 	
 	/** ----- Diffusion ------ **/
@@ -75,7 +76,7 @@ public class CommitStats {
 	}
 	
 	/**
-	 * Function:		addNF
+	 * Function:		addNF 
 	 * Description: 	Adds the number of modified files to a commit
 	 */
 	void addNF(Commit commit, ArrayList<DiffFile> diff){
@@ -98,10 +99,25 @@ public class CommitStats {
 			totalLOCModified += modLOC; locModified.add(modLOC);
 		}
 		
-		for(DiffFile diffFile: diff){
-			double value = (double)diffFile.getAllModifiedLOC()/(double)totalLOCModified;
-			entrophy -= (value * (Math.log(value)/Math.log(2)));
+		// saftey check
+		if(totalLOCModified == 0){
+			// do nothing
+		} else {
+			for(int loc: locModified){
+
+				if(loc == 0){
+					break;
+				}
+
+				//System.out.println("loc " + loc + " over total " + totalLOCModified);
+				double value = (double)loc/(double)totalLOCModified;
+				//System.out.println("the division is.. " + value);
+
+				//System.out.println("entrophy is.. " + (value * (Math.log(value)/Math.log(2))));
+				entrophy -= (value * (Math.log(value)/Math.log(2)));
+			}
 		}
+		
 		commit.setEntrophy(entrophy);
 	}
 	

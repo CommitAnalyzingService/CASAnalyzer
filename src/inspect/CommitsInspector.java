@@ -60,8 +60,8 @@ public class CommitsInspector {
 	}
 	
 	/**
-	 * Returns an ArrayList of commits of all corrective commits. Also performs metrics
-	 * on all commits. Updates the commits table for the columns isBuggy, ns, nf, and nd
+	 * Inspects all commits. Also performs metrics
+	 * Updates the commits table for the columns isBuggy, ns, nf, and nd
 	 * 
 	 * @param commits	An ArrayList of all the commits
 	 */
@@ -69,15 +69,13 @@ public class CommitsInspector {
 		int corrIndex = 0; // keep track on the index of the corrective commit
 		
 		for (Commit commit: allCommits) {
-			
-			System.out.println("       inspecting: " + commit.getCommitHash());
+			//System.out.println("       inspecting: " + commit.getCommitHash());
 		
 			// If it is a corrective commit, check to see where the bug was introduced.
 			if (correctiveCat.belongs(commit)){
 				corrIndex = findCorrectiveIndex(commit,allCommits, corrIndex);
 				bugFinder.findBugInducingCommit(commit, allCommits.subList(corrIndex, allCommits.size()-1 ));
 			}
-			
 			// generate the metrics for the commit
 			commitStats.generateStats(commit);
 			dbAccess.updateMetrics(commit);

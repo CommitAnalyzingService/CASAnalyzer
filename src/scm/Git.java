@@ -77,21 +77,21 @@ public class Git extends Repository{
 			// Saftey check - make sure it has name of file
 			if (diffLine.length > 2){
 				String fileName = diffLine[2];
-				int linesAdded;
-				int linesDeleted;
-				
+				int linesAdded = 0;
+				int linesDeleted = 0;
+			
 				try {
 				    linesAdded = Integer.parseInt(diffLine[0]);
-				} catch (NumberFormatException e) {
+				} catch (Exception e) {
 				    linesAdded = 0;
 				}
 				
 				try {
 				    linesDeleted = Integer.parseInt(diffLine[1]);
-				} catch (NumberFormatException e) {
+				} catch (Exception e) {
 				    linesDeleted = 0;
 				}
-				
+
 				DiffFile difFile = new DiffFile(fileName, linesAdded, linesDeleted);
 				diffs.add(difFile);
 			}

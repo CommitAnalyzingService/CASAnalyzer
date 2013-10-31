@@ -44,14 +44,12 @@ public class BugFinder {
 		for(Commit commit: allCommits){
 			
 			if(commit.getUnixTimeStamp() < correctiveCommit.getUnixTimeStamp()){
-				System.out.println("Is buggy?? " + commit.getCommitHash());
 				ArrayList<String> filesChanged = repo.filesChanged(commit);
 	
 				for(String file: filesChanged){
 					
 					// This introduced the bug!
 					if(filesChangedCorrectiveCommit.contains(file)){
-						System.out.println("YESS!");
 						commit.setAsBuggy(); 
 						dbAccess.markAsBugInducing(commit);
 						return;

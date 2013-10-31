@@ -45,11 +45,13 @@ public class ModelBuilder {
 				nsListBuggy.add(commit.getNS());
 				ndListBuggy.add(commit.getND());
 				nfListBuggy.add(commit.getNF());
+				System.out.println("Commit has this entro: " + commit.getEntrophy());
 				entrophyListBuggy.add(commit.getEntrophy());
 			} else {
 				nsListNonBuggy.add(commit.getNS());
 				ndListNonBuggy.add(commit.getND());
 				nfListNonBuggy.add(commit.getNF());
+				System.out.println("Commit has this entro: " + commit.getEntrophy());
 				entrophyListNonBuggy.add(commit.getEntrophy());
 			}
 		}
@@ -115,6 +117,8 @@ public class ModelBuilder {
 			metrics.setNfBuggyMedian(x.asDouble());
 			
 			x = re.eval("median(c" + replaceBrackets(entrophyListBuggy.toString()) + ")");
+			System.out.println(entrophyListBuggy);
+			System.out.println(entrophyListNonBuggy);
 			metrics.setEntrophyBuggyMedian(x.asDouble());
 			
 			x = re.eval("median(c" + replaceBrackets(entrophyListNonBuggy.toString()) + ")");

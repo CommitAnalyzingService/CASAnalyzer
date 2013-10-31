@@ -54,13 +54,14 @@ public class CommitDbAccess {
 	        	 String authorName = rs.getString(7);
 	        	 String unixTimeStamp = rs.getString(11);
 	        	 boolean isBuggy = rs.getBoolean(19);
+	        	 double entrophy = rs.getDouble(20);
 	        	 
 	        	 int ns = rs.getInt(20);
 	        	 int nd = rs.getInt(21);
 	        	 int nf = rs.getInt(22);
 	        	 
 	        	 Commit commit = new Commit(commitHash,treeHash,message,authorName,unixTimeStamp,ns,nd,nf,
-	        			 					isBuggy);
+	        			 					isBuggy, entrophy);
 	        	 commits.add(commit);
 	        
 	            }
@@ -129,7 +130,9 @@ public class CommitDbAccess {
 			con = DriverManager.getConnection(commitDbUrl, user, password);
 	        pst = con.prepareStatement("UPDATE commits SET ns = " + commit.getNS() + 
 	        							",nd =  " + commit.getND() + 
-	        							",nf = " + commit.getNF() + "WHERE commit_hash = '" + 
+	        							",nf = " + commit.getNF() + 
+	        							",entrophy = " + commit.getEntrophy() +
+	        							"WHERE commit_hash = '" + 
 	        								commit.getCommitHash() + "'");
 	        pst.executeUpdate();
 		} catch (SQLException ex){

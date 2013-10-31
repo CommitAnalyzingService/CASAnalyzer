@@ -14,7 +14,6 @@ public class Commit implements Comparable<Commit> {
 	private String unixTimeStamp = null;
 	
 	/* METRICS */
-	/* TODO MAKE PRIVATE WITH GETTERS */
 	// size
 	private int la = 0; // lines of code added
 	private int ld = 0; // lines of code deleted
@@ -43,7 +42,7 @@ public class Commit implements Comparable<Commit> {
 	private boolean buggy = false;
 	
 	public Commit(String commitHash, String treeHash, String message, String authorName, String unixTimeStamp, int ns,
-			int nd, int nf, boolean isBuggy){
+			int nd, int nf, boolean isBuggy, double entrophy){
 		this.commitHash = commitHash;
 		this.treeHash = treeHash;
 		this.message = message;
@@ -53,6 +52,7 @@ public class Commit implements Comparable<Commit> {
 		this.nd = nd;
 		this.nf = nf;
 		this.buggy = isBuggy;
+		this.entrophy = entrophy;
 	}
 	
 	/**
