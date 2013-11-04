@@ -97,32 +97,68 @@ public class ModelBuilder {
 		try{
 
 			REXP x;
+			double pvalue;
 			
-			x = re.eval("median(c" + replaceBrackets(nsListNonBuggy.toString()) + ")");
-			metrics.setNsNonBuggyMedian(x.asDouble());
+			/* NS */
 			
-			x = re.eval("median(c" + replaceBrackets(nsListBuggy.toString()) + ")");
-			metrics.setNsBuggyMedian(x.asDouble());
-
-			x = re.eval("median(c" + replaceBrackets(ndListNonBuggy.toString()) + ")");
-			metrics.setNdNonBuggyMedian(x.asDouble());
-
-			x = re.eval("median(c" + replaceBrackets(ndListBuggy.toString()) + ")");
-			metrics.setNdBuggyMedian(x.asDouble());
+			// check significance by wilcox test
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(nsListNonBuggy.toString()) + "," + 
+					replaceBrackets(nsListBuggy.toString()) + ")")).asDouble();
 			
-			x = re.eval("median(c" + replaceBrackets(nfListNonBuggy.toString()) + ")");
-			metrics.setNfNonBuggyMedian(x.asDouble());
+			// if significant
+			if(pvalue >= 0.05){
+				x = re.eval("median(c" + replaceBrackets(nsListNonBuggy.toString()) + ")");
+				metrics.setNsNonBuggyMedian(x.asDouble());
+				x = re.eval("median(c" + replaceBrackets(nsListBuggy.toString()) + ")");
+				metrics.setNsBuggyMedian(x.asDouble());
+			} else {
+				metrics.setNsNonBuggyMedian(-1);
+				metrics.setNsBuggyMedian(-1);
+			}
 			
-			x = re.eval("median(c" + replaceBrackets(nfListBuggy.toString()) + ")");
-			metrics.setNfBuggyMedian(x.asDouble());
+			/* ND */
 			
-			x = re.eval("median(c" + replaceBrackets(entrophyListBuggy.toString()) + ")");
-			System.out.println(entrophyListBuggy);
-			System.out.println(entrophyListNonBuggy);
-			metrics.setEntrophyBuggyMedian(x.asDouble());
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(ndListNonBuggy.toString()) + "," + 
+					replaceBrackets(ndListBuggy.toString()) + ")")).asDouble();
 			
-			x = re.eval("median(c" + replaceBrackets(entrophyListNonBuggy.toString()) + ")");
-			metrics.setEntrophyNonBuggyMedian(x.asDouble());
+			if(pvalue >= 0.05){
+				x = re.eval("median(c" + replaceBrackets(ndListNonBuggy.toString()) + ")");
+				metrics.setNdNonBuggyMedian(x.asDouble());
+				x = re.eval("median(c" + replaceBrackets(ndListBuggy.toString()) + ")");
+				metrics.setNdBuggyMedian(x.asDouble());
+			} else {
+				metrics.setNdNonBuggyMedian(-1);
+				metrics.setNdBuggyMedian(-1);
+			}
+			
+			/* NF */
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(nfListNonBuggy.toString()) + "," + 
+					replaceBrackets(nfListBuggy.toString()) + ")")).asDouble();
+			
+			if(pvalue >= 0.05){
+				x = re.eval("median(c" + replaceBrackets(nfListNonBuggy.toString()) + ")");
+				metrics.setNfNonBuggyMedian(x.asDouble());
+				x = re.eval("median(c" + replaceBrackets(nfListBuggy.toString()) + ")");
+				metrics.setNfBuggyMedian(x.asDouble());
+			} else {
+				metrics.setNfNonBuggyMedian(-1);
+				metrics.setNfBuggyMedian(-1);
+			}
+			
+			/* Entrophy */
+			
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(entrophyListBuggy.toString()) + "," + 
+					replaceBrackets(entrophyListNonBuggy.toString()) + ")")).asDouble();
+			
+			if(pvalue >= 0.05){
+				x = re.eval("median(c" + replaceBrackets(entrophyListBuggy.toString()) + ")");
+				metrics.setEntrophyBuggyMedian(x.asDouble());
+				x = re.eval("median(c" + replaceBrackets(entrophyListNonBuggy.toString()) + ")");
+				metrics.setEntrophyNonBuggyMedian(x.asDouble());
+			} else {
+				metrics.setEntrophyBuggyMedian(-1);
+				metrics.setEntrophyNonBuggyMedian(-1);
+			}
 			
 			// update the metrics table
 			metricDbAccess.updateMetric(metrics, repoName);
