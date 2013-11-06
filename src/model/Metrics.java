@@ -1,7 +1,5 @@
 package model;
 
-import analyze.Commit;
-
 /**
  * Simply holds metrics for a commit
  * This way the order we pass metrics and such doesn't matter for the 
@@ -20,6 +18,10 @@ public class Metrics {
 	private double nfNonBuggyMedian;
 	private double entrophyBuggy;
 	private double entrophyNonBuggy;
+	private double laNonBuggyMedian;
+	private double laBuggyMedian;
+	private double ldNonBuggyMedian;
+	private double ldBuggyMedian;
 	
 	/** GETTERS AND SETTERS **/
 	
@@ -85,6 +87,38 @@ public class Metrics {
 	
 	public double getEntrophyNonBuggyMedian(){
 		return this.entrophyNonBuggy;
+	}
+
+	public double getLaNonBuggyMedian() {
+		return laNonBuggyMedian;
+	}
+
+	public void setLaNonBuggyMedian(double laNonBuggyMedian) {
+		this.laNonBuggyMedian = laNonBuggyMedian;
+	}
+
+	public double getLaBuggyMedian() {
+		return laBuggyMedian;
+	}
+
+	public void setLaBuggyMedian(double laBuggyMedian) {
+		this.laBuggyMedian = laBuggyMedian;
+	}
+
+	public double getLdNonBuggyMedian() {
+		return ldNonBuggyMedian;
+	}
+
+	public void setLdNonBuggyMedian(double ldNonBuggyMedian) {
+		this.ldNonBuggyMedian = ldNonBuggyMedian;
+	}
+
+	public double getLdBuggyMedian() {
+		return ldBuggyMedian;
+	}
+
+	public void setLdBuggyMedian(double ldBuggyMedian) {
+		this.ldBuggyMedian = ldBuggyMedian;
 	}
 	
 }

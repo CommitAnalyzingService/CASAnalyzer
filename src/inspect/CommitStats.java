@@ -23,10 +23,14 @@ public class CommitStats {
 	
 	public void generateStats(Commit commit){
 		ArrayList<DiffFile> diff = repo.performDiff(commit);
+		
+		/** STATS TO CALCULATE FOR COMMIT */
 		addNS(commit, diff);
 		addND(commit, diff);
 		addNF(commit, diff);
 		addEntrophy(commit, diff);
+		addLA(commit,diff);
+		addLD(commit,diff);
 	}
 	
 	/** ----- Diffusion ------ **/
@@ -130,6 +134,7 @@ public class CommitStats {
 		for(DiffFile diffFile: diff){
 			la += diffFile.getLinesAdded();
 		}
+		
 		commit.setLa(la);
 	}
 	
@@ -142,6 +147,6 @@ public class CommitStats {
 	}
 	
 	void addLt(Commit commit, ArrayList<DiffFile> diff){
-		
+		// TBD
 	}
 }

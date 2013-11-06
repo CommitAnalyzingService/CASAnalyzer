@@ -55,13 +55,15 @@ public class CommitDbAccess {
 	        	 String unixTimeStamp = rs.getString(11);
 	        	 boolean isBuggy = rs.getBoolean(19);
 	        	 double entrophy = rs.getDouble(23);
+	        	 int la = rs.getInt(24);
+	        	 int ld = rs.getInt(25);
 	        	 
 	        	 int ns = rs.getInt(20);
 	        	 int nd = rs.getInt(21);
 	        	 int nf = rs.getInt(22);
 	        	 
 	        	 Commit commit = new Commit(commitHash,treeHash,message,authorName,unixTimeStamp,ns,nd,nf,
-	        			 					isBuggy, entrophy);
+	        			 					isBuggy, entrophy, la, ld);
 	        	 commits.add(commit);
 	        
 	            }
@@ -132,6 +134,8 @@ public class CommitDbAccess {
 	        							",nd =  " + commit.getND() + 
 	        							",nf = " + commit.getNF() + 
 	        							",entrophy = " + commit.getEntrophy() +
+	        							",la = " + commit.getLa() + 
+	        							",ld = " + commit.getLd() + 
 	        							"WHERE commit_hash = '" + 
 	        								commit.getCommitHash() + "'");
 	        pst.executeUpdate();

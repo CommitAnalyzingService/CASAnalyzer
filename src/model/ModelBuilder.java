@@ -27,7 +27,11 @@ public class ModelBuilder {
 	private ArrayList<Integer> nfListNonBuggy = new ArrayList<Integer>();
 	private ArrayList<Double> entrophyListBuggy = new ArrayList<Double>();
 	private ArrayList<Double> entrophyListNonBuggy = new ArrayList<Double>();
-	
+	private ArrayList<Integer> laListBuggy = new ArrayList<Integer>();
+	private ArrayList<Integer> laListNonBuggy = new ArrayList<Integer>();
+	private ArrayList<Integer> ldListBuggy = new ArrayList<Integer>();
+	private ArrayList<Integer> ldListNonBuggy = new ArrayList<Integer>();
+ 	
 	public ModelBuilder(String repoName, MetricDbAccess mDbAccess, CommitDbAccess cDbAccess){
 		this.metricDbAccess = mDbAccess;
 		this.commitDbAccess = cDbAccess;
@@ -45,14 +49,16 @@ public class ModelBuilder {
 				nsListBuggy.add(commit.getNS());
 				ndListBuggy.add(commit.getND());
 				nfListBuggy.add(commit.getNF());
-				System.out.println("Commit has this entro: " + commit.getEntrophy());
 				entrophyListBuggy.add(commit.getEntrophy());
+				laListBuggy.add(commit.getLa());
+				ldListBuggy.add(commit.getLd());
 			} else {
 				nsListNonBuggy.add(commit.getNS());
 				ndListNonBuggy.add(commit.getND());
 				nfListNonBuggy.add(commit.getNF());
-				System.out.println("Commit has this entro: " + commit.getEntrophy());
 				entrophyListNonBuggy.add(commit.getEntrophy());
+				laListNonBuggy.add(commit.getLa());
+				ldListNonBuggy.add(commit.getLa());
 			}
 		}
 		
@@ -98,6 +104,8 @@ public class ModelBuilder {
 
 			REXP x;
 			double pvalue;
+			
+			System.out.println(ldListBuggy.toString());
 			
 			/* NS */
 			
@@ -161,6 +169,39 @@ public class ModelBuilder {
 			} else {
 				metrics.setEntrophyBuggyMedian(-1);
 				metrics.setEntrophyNonBuggyMedian(-1);
+			}
+			
+			
+			/* LA */
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(laListNonBuggy.toString()) + ",c" + 
+					replaceBrackets(laListBuggy.toString()) + ")$p.value")).asDouble();
+			
+			System.out.println("***** " + pvalue);
+			System.out.println("LA: " + laListNonBuggy);
+			if(pvalue >= 0.05){
+				x = re.eval("median(c" + replaceBrackets(laListNonBuggy.toString()) + ")");
+				System.out.println(x.asDouble());
+				metrics.setLaNonBuggyMedian(x.asDouble());
+				x = re.eval("median(c" + replaceBrackets(laListBuggy.toString()) + ")");
+				metrics.setLaBuggyMedian(x.asDouble());
+			} else {
+				metrics.setLaNonBuggyMedian(-1);
+				metrics.setLaBuggyMedian(-1);
+			}
+			
+			/* LD */
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(ldListNonBuggy.toString()) + ",c" + 
+					replaceBrackets(ldListBuggy.toString()) + ")$p.value")).asDouble();
+			
+			System.out.println("***** " + pvalue);
+			if(pvalue >= 0.05){
+				x = re.eval("median(c" + replaceBrackets(ldListNonBuggy.toString()) + ")");
+				metrics.setLdNonBuggyMedian(x.asDouble());
+				x = re.eval("median(c" + replaceBrackets(ldListBuggy.toString()) + ")");
+				metrics.setLdBuggyMedian(x.asDouble());
+			} else {
+				metrics.setLdNonBuggyMedian(-1);
+				metrics.setLdBuggyMedian(-1);
 			}
 			
 			// update the metrics table
