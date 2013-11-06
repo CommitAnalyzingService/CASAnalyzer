@@ -140,4 +140,28 @@ public class Commit implements Comparable<Commit> {
 			return AFTER;
 		}
 	}
+
+	public int getLa() {
+		return la;
+	}
+
+	public void setLa(int la) {
+		this.la = la;
+	}
+
+	public int getLd() {
+		return ld;
+	}
+
+	public void setLd(int ld) {
+		this.ld = ld;
+	}
+
+	public int getLt() {
+		return lt;
+	}
+
+	public void setLt(int lt) {
+		this.lt = lt;
+	}
 }

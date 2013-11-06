@@ -102,9 +102,9 @@ public class ModelBuilder {
 			/* NS */
 			
 			// check significance by wilcox test
-			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(nsListNonBuggy.toString()) + "," + 
-					replaceBrackets(nsListBuggy.toString()) + ")")).asDouble();
-			
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(nsListNonBuggy.toString()) + ",c" + 
+					replaceBrackets(nsListBuggy.toString()) + ")$p.value")).asDouble();
+			System.out.println("***** " + pvalue);
 			// if significant
 			if(pvalue >= 0.05){
 				x = re.eval("median(c" + replaceBrackets(nsListNonBuggy.toString()) + ")");
@@ -118,9 +118,10 @@ public class ModelBuilder {
 			
 			/* ND */
 			
-			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(ndListNonBuggy.toString()) + "," + 
-					replaceBrackets(ndListBuggy.toString()) + ")")).asDouble();
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(ndListNonBuggy.toString()) + ",c" + 
+					replaceBrackets(ndListBuggy.toString()) + ")$p.value")).asDouble();
 			
+			System.out.println("***** " + pvalue);
 			if(pvalue >= 0.05){
 				x = re.eval("median(c" + replaceBrackets(ndListNonBuggy.toString()) + ")");
 				metrics.setNdNonBuggyMedian(x.asDouble());
@@ -132,9 +133,10 @@ public class ModelBuilder {
 			}
 			
 			/* NF */
-			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(nfListNonBuggy.toString()) + "," + 
-					replaceBrackets(nfListBuggy.toString()) + ")")).asDouble();
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(nfListNonBuggy.toString()) + ",c" + 
+					replaceBrackets(nfListBuggy.toString()) + ")$p.value")).asDouble();
 			
+			System.out.println("***** " + pvalue);
 			if(pvalue >= 0.05){
 				x = re.eval("median(c" + replaceBrackets(nfListNonBuggy.toString()) + ")");
 				metrics.setNfNonBuggyMedian(x.asDouble());
@@ -147,9 +149,10 @@ public class ModelBuilder {
 			
 			/* Entrophy */
 			
-			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(entrophyListBuggy.toString()) + "," + 
-					replaceBrackets(entrophyListNonBuggy.toString()) + ")")).asDouble();
+			pvalue = (re.eval("wilcox.test(c" + replaceBrackets(entrophyListBuggy.toString()) + ",c" + 
+					replaceBrackets(entrophyListNonBuggy.toString()) + ")$p.value")).asDouble();
 			
+			System.out.println("***** " + pvalue);
 			if(pvalue >= 0.05){
 				x = re.eval("median(c" + replaceBrackets(entrophyListBuggy.toString()) + ")");
 				metrics.setEntrophyBuggyMedian(x.asDouble());

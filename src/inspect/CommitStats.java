@@ -122,4 +122,26 @@ public class CommitStats {
 	}
 	
 	/** END DIFFUSION **/
+	
+	/** BEGIN SIZE **/
+	
+	void addLA(Commit commit, ArrayList<DiffFile> diff){
+		int la = 0;
+		for(DiffFile diffFile: diff){
+			la += diffFile.getLinesAdded();
+		}
+		commit.setLa(la);
+	}
+	
+	void addLD(Commit commit, ArrayList<DiffFile> diff){
+		int ld = 0;
+		for(DiffFile diffFile: diff){
+			ld += diffFile.getLinesDeleted();
+		}
+		commit.setLd(ld);
+	}
+	
+	void addLt(Commit commit, ArrayList<DiffFile> diff){
+		
+	}
 }
