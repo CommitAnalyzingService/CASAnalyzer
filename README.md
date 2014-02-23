@@ -1,6 +1,8 @@
 CASAnalyzer
 ===========
 
+DEPRICATED - please see https://github.com/CommitAnalyzingService/CAS_CodeRepoAnalyzer
+
 Builds a model to predict risky code commits based on a repos history 
 
 
